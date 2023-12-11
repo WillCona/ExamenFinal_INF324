@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Árbol de Navidad 3D</title>
+  <script src="https://threejs.org/build/three.js"></script>
+</head>
+<body>
+  <script>
+    // Configuración básica
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Crear el tronco del árbol
+    const trunkGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const trunkMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
+    const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+    trunk.position.y = 0.5; // Ajusta la posición para centrarlo verticalmente
+    scene.add(trunk);
+
+    // Crear la copa del árbol
+    const coneGeometry = new THREE.ConeGeometry(3, 4, 8);
+    const coneMaterial = new THREE.MeshBasicMaterial({ color: 0x228B22 });
+    const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+    cone.position.y = 3; // Ajusta la posición para alinear la base de la copa con la parte superior del tronco
+    scene.add(cone);
+
+    // Posiciona la cámara
+    camera.position.z = 10;
+
+    // Evento de ratón para controlar la rotación del árbol
+    const handleMouseMove = (event) => {
+      const x = event.clientX / window.innerWidth * 2 - 1;
+      const y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      // Ajusta la rotación del árbol según las coordenadas del mouse
+      trunk.rotation.x = y;
+      trunk.rotation.y = x;
+
+      cone.rotation.x = y;
+      cone.rotation.y = x;
+
+      render();
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    // Función para renderizar la escena
+    const render = () => {
+      renderer.render(scene, camera);
+    };
+
+    render();
+  </script>
+</body>
+</html>
